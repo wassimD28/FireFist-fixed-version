@@ -1,0 +1,176 @@
+<!-- targeted muscle comp html -->
+<div class="flex w-[600px] flex-row gap-1 px-4">
+  <div class="flex flex-row gap-2">
+    <div class="flex w-[60%] flex-col gap-2">
+      <!-- advanced view -->
+      <div class="flex w-full flex-col gap-2 rounded-lg bg-custom-semiBg2 p-3">
+        <div class="flex flex-row items-center justify-between">
+          <h1 class="text-lg font-semibold text-custom-primary">
+            Advanced view
+          </h1>
+          <!-- checkbox -->
+          <div class="flex items-center">
+            <label class="me-5 inline-flex cursor-pointer items-center">
+              <input
+                type="checkbox"
+                value=""
+                class="peer sr-only"
+                [(ngModel)]="advancedView"
+              />
+              <div
+                class="peer relative h-4 w-8 rounded-full bg-custom-bg after:absolute after:start-[2px] after:top-0.5 after:h-3 after:w-3 after:rounded-full after:border after:bg-custom-text after:transition-all after:content-[''] peer-checked:bg-custom-accent peer-checked:after:translate-x-[130%] rtl:peer-checked:after:-translate-x-full"
+              ></div>
+              <!-- checkbox text -->
+            </label>
+          </div>
+        </div>
+        <p class="text-xs text-custom-text opacity-50">
+          Advanced vision allows you to see more of the small muscles and breaks
+          down some of the larger muscles.
+        </p>
+      </div>
+      <!-- targeted muscles -->
+      <div
+        class="relative flex h-[calc(100%-(92px+8px))] flex-col gap-1 rounded-lg bg-custom-semiBg2 p-2"
+        [ngClass]="{ 'opacity-50': isChoosingMuscle }"
+      >
+
+          <div class="flex flex-row justify-between items-center mb-1 px-1 pt-1">
+            <h1 class=" text-lg font-semibold text-custom-primary">
+              Targeted muscles
+            </h1>
+            <h2>{{ targetedMuscles.length + '/4'}}</h2>
+          </div>
+
+        <!-- targeted muscle list -->
+        <div class="flex flex-col gap-1.5 overflow-hidden">
+          @if (targetedMuscles.length > 0) {
+            @for (targetedMuscle of targetedMuscles; track $index) {
+              <!-- targeted muscle container -->
+              <div
+                @targetedMuscleItemAnim
+                class="relative flex flex-row items-center gap-2 rounded bg-custom-semiBg1 px-2 py-1"
+              >
+                <button
+                  [disabled]="isChoosingMuscle"
+                  (click)="removeTargetedMuscle($index)"
+                  class="absolute left-0 top-0 flex h-full items-center rounded rounded-r-none bg-custom-primary px-3 font-bold"
+                >
+                  -
+                </button>
+                <img
+                  class="ml-8 h-8 w-8"
+                  [src]="
+                    '../../../../assets/icons/svg icon/' +
+                    targetedMuscle.image +
+                    '.svg'
+                  "
+                  alt=""
+                />
+                <div class="flex flex-col gap-0.5">
+                  <h3 class="text-sm text-custom-text">
+                    {{ targetedMuscle.name }}
+                  </h3>
+                  <select
+                    [disabled]="isChoosingMuscle"
+                    [(ngModel)]="targetedMuscle.pressureLevel"
+                    [ngClass]="{
+                      'bg-red-500':
+                        targetedMuscle.pressureLevel == PressureLevel.VeryHigh,
+                      'bg-orange-500':
+                        targetedMuscle.pressureLevel == PressureLevel.High,
+                      'bg-green-400':
+                        targetedMuscle.pressureLevel == PressureLevel.Medium,
+                      'bg-gray-500':
+                        targetedMuscle.pressureLevel == PressureLevel.Low,
+                    }"
+                    class="block h-6 w-[150px] appearance-none rounded border-none bg-opacity-80 px-2 py-0.5 text-sm font-medium text-custom-semiBg2 outline-none ring-0"
+                  >
+                    @for (pressureLevel of pressureLevels; track $index) {
+                      <option
+                        class="h-6 bg-custom-semiBg1 text-custom-text first-letter:uppercase hover:bg-custom-semiBg3"
+                        [value]="pressureLevel"
+                      >
+                        {{
+                          (pressureLevel | firstLetterUppercase) + " pressure"
+                        }}
+                      </option>
+                    }
+                  </select>
+                </div>
+              </div>
+            }
+          } @else {
+            <div
+              @EmptyTargetedMuscleList
+              class="flex w-full flex-col items-center justify-center px-4 pt-10"
+            >
+              <img
+                class="h-28 w-28 opacity-25"
+                src="../../../../assets/icons/light/add element.svg"
+                alt=""
+              />
+              <h1 class="text-lg font-medium tracking-wider text-white">
+                Add targeted muscles here !
+              </h1>
+              <p class="text-center text-xs text-custom-text/60">
+                click on add icon and choose your targeted muscle from the body
+                diagram.
+              </p>
+            </div>
+          }
+          <!-- add icon -->
+          <button
+            (click)="chooseMuscle()"
+            [disabled]="isChoosingMuscle || targetedMuscles.length >= 4"
+            [ngClass]="{
+              hidden: isChoosingMuscle || targetedMuscles.length >= 4,
+            }"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              class="group absolute bottom-3 right-3 h-10 w-10 cursor-pointer"
+            >
+              <g id="style=bulk">
+                <g id="add">
+                  <path
+                    id="rectangle"
+                    d="M1.25 7.25C1.25 3.93629 3.93629 1.25 7.25 1.25H16.75C20.0637 1.25 22.75 3.93629 22.75 7.25V16.75C22.75 20.0637 20.0637 22.75 16.75 22.75H7.25C3.93629 22.75 1.25 20.0637 1.25 16.75V7.25Z"
+                    fill="#892cdc"
+                    class="hover:text-custom-accent group-hover:fill-custom-accent"
+                  />
+                  <path
+                    id="vector (Stroke)"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M12.0248 6.32349C12.3578 6.32349 12.6277 6.59345 12.6277 6.92646L12.6277 16.8281C12.6277 17.1611 12.3577 17.431 12.0247 17.431C11.6917 17.431 11.4218 17.1611 11.4218 16.8281L11.4218 6.92645C11.4218 6.59344 11.6918 6.32349 12.0248 6.32349Z"
+                    fill="#1b1b1b"
+                  />
+                  <path
+                    id="vector (Stroke)_2"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M17.8486 12.0044C17.8486 12.3553 17.5641 12.6398 17.2132 12.6398L6.77865 12.6398C6.42771 12.6398 6.14323 12.3553 6.14323 12.0043C6.14323 11.6534 6.42772 11.3689 6.77865 11.3689L17.2132 11.369C17.5641 11.369 17.8486 11.6535 17.8486 12.0044Z"
+                    fill="#1b1b1b"
+                  />
+                </g>
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- body diagram -->
+    <app-body-diagram
+      [bodyDiagrams]="bodyDiagrams"
+      [advancedView]="advancedView"
+      [isChoosingMuscle]="isChoosingMuscle"
+      (isChoosingMuscleChange)="onIsChoosingMuscleChange($event)"
+      (selectedMuscle)="onMuscleSelected($event)"
+      class="w-[calc(40%-4px)]"
+    ></app-body-diagram>
+  </div>
+</div>

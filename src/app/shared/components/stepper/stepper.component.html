@@ -1,0 +1,33 @@
+<!-- stepper -->
+<div class="fixed w-[600px] px-10 pt-4 pb-2">
+  <!-- progress bar -->
+  <div class="absolute top-1/2 z-0 h-1 w-[calc(100%-80px)] px-4">
+    <div
+      class="absolute z-20 h-full bg-custom-primary duration-300 ease-in-out"
+      [ngClass]="{
+        'w-[30%]': steps[1].isCurrent,
+        'w-[60%]': steps[2].isCurrent,
+        'w-[90%]': steps[3].isCurrent,
+      }"
+    ></div>
+    <div
+      class="absolute z-10 h-full w-[calc(100%-32px)] bg-custom-secondary"
+    ></div>
+  </div>
+  <!-- stepper steps -->
+  <div class="relative z-10 flex w-full flex-row items-center justify-between">
+    @for (step of steps; track $index) {
+      <button
+        class="flex h-9 w-9 items-center justify-center rounded-full  font-medium duration-200 ease-in-out hover:bg-custom-accent hover:text-custom-bg"
+        [ngClass]="{
+          '!bg-custom-primary': step.completed,
+          '!bg-custom-accent': step.isCurrent,
+          'scale-110': step.isCurrent,
+          'bg-custom-secondary': !step.completed
+        }"
+      >
+        {{ step.id }}
+      </button>
+    }
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div
+  class="absolute z-50 flex w-[300px] select-none flex-col rounded-lg border border-custom-accent bg-custom-darkPurple px-3 pt-2 duration-200 ease-in-out pb-3"
+  [ngStyle]="{ 'right.px': mouseX, 'top.px': mouseY }"
+  [ngClass]="{ 'hidden opacity-0': !muscleHovered }"
+>
+  <h1 class="text-lg font-medium tracking-wider text-custom-text">
+    {{ muscle?.name ?? "unknown muscle name" }}
+  </h1>
+
+  <h2 class="mb-0.5 text-xs font-thin text-custom-accent/60 first-letter:uppercase">
+    {{ muscle?.partOf ?? "unknown part" }}
+  </h2>
+
+  <p class="text-xs font-thin text-custom-text/60">
+    {{ muscle?.description ?? "unknown description" }}
+  </p>
+</div>

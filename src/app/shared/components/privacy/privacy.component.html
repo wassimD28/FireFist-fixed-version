@@ -1,0 +1,15 @@
+<div
+  class="flex h-full items-center gap-2 rounded-lg bg-custom-semiBg2 px-2 font-semibold text-custom-text"
+>
+  @for (privacy of privacies; track $index) {
+    <button
+      (click)="togglePrivacy(privacy.id)"
+      class="w-20 justify-self-center rounded-lg py-1 text-base duration-200 ease-in-out font-medium"
+      [class.bg-custom-accent]="privacy.selected"
+      [class.text-custom-bg]="privacy.selected"
+      [class.hover:bg-custom-semiBg3]="!privacy.selected"
+    >
+      {{ privacy.name }}
+    </button>
+  }
+</div>

@@ -1,0 +1,22 @@
+<div class="flex flex-col gap-2 bg-custom-semiBg1 p-2 rounded-lg mb-2">
+  <!-- category filter heading -->
+  <h1 class="text-xl text-custom-accent first-letter:uppercase font-semibold mb-1">category</h1>
+  <!-- categories container -->
+  <div class="flex flex-row gap-2">
+    <!-- categories -->
+    @for (category of categories; track $index) {
+      <div
+        class="flex h-16 w-16 gap-1 flex-col items-center justify-center rounded-md bg-custom-semiBg2 "
+      >
+        <!-- category image -->
+        <img
+          class="h-9 w-9"
+          [src]="'../../../../assets/icons/light/' + category.image"
+          [alt]="category.name"
+        />
+        <!-- category name -->
+        <h3 class="text-xs">{{ category.name }}</h3>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<!-- navBar spacer -->
+<div class="h-20 w-full"></div>
+<!-- container -->
+<div class="flex h-full w-full flex-row justify-between gap-2 px-4">
+  <!-- side filter -->
+  <side-filter></side-filter>
+  <!-- exercise container -->
+  <div
+    class="ml-[220px] flex h-[calc(100vh-80px)] w-[calc(100%-220px)] flex-col"
+  >
+    <!-- operations management -->
+    <div class="flex w-full flex-row justify-between">
+      <!-- search on exercise input -->
+      <div>
+        <input
+          class="rounded-lg rounded-r-none bg-custom-semiBg1 text-custom-text focus:border-custom-accent focus:ring-custom-accent"
+          type="text"
+        />
+        <button
+          class="h-full cursor-pointer rounded-lg rounded-l-none bg-custom-secondary px-2 text-custom-text hover:bg-custom-accent"
+        >
+          Search
+        </button>
+      </div>
+      <!-- show exercise by privacy button -->
+      <app-privacy></app-privacy>
+      <!-- operations buttons -->
+      <div class="flex flex-row gap-2">
+        <!-- make workout button  -->
+        <button
+          class="h-full w-48 rounded-lg bg-yellow-400 font-semibold text-custom-bg hover:bg-yellow-300"
+        >
+          Make a Workout
+        </button>
+        <!-- add exercise button -->
+        <button
+          (click)="openDialog()"
+          class="h-full w-48 rounded-md bg-custom-primary px-4 font-semibold text-custom-semiBg1 hover:bg-custom-accent"
+        >
+          Add Exercise
+        </button>
+      </div>
+    </div>
+    <!-- exercise list -->
+    <div class="flex w-full flex-row flex-wrap gap-[10px] py-2">
+      @if (exercises.length > 0) {
+        @for (exercise of exercises; track $index) {
+          <app-exercise-card
+            class="w-[calc((100%/4)-10px)]"
+            [exercise]="exercise"
+          ></app-exercise-card>
+        }
+      } @else {
+        <!-- display no exercise message -->
+        <p>No exercises found.</p>
+      }
+    </div>
+  </div>
+</div>

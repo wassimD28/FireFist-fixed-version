@@ -1,0 +1,71 @@
+<!-- body diagram comp html -->
+<div class="flex flex-col gap-1">
+  <!-- change view button  -->
+  <div class="flex flex-row gap-1 rounded bg-custom-semiBg2 p-1">
+    <button
+      class="w-full rounded py-1 tracking-wide duration-100 ease-in-out first-letter:uppercase"
+      [class.bg-custom-primary]="viewAngle === ViewAngle.Front"
+      [class.hover:bg-custom-semiBg3]="viewAngle !== ViewAngle.Front"
+      (click)="toggleViewAngle()"
+    >
+      front
+    </button>
+    <button
+      class="w-full rounded py-1 tracking-wide duration-100 ease-in-out first-letter:uppercase hover:bg-custom-semiBg3"
+      [class.bg-custom-primary]="viewAngle === ViewAngle.Back"
+      [class.hover:bg-custom-semiBg3]="viewAngle !== ViewAngle.Back"
+      (click)="toggleViewAngle()"
+    >
+      back
+    </button>
+  </div>
+  <app-muscle-tool-tip
+    [mouseX]="mouseX - mouseX * 0.755"
+    [mouseY]="mouseY - mouseY * 0.55"
+    [muscleHovered]="muscleHovered"
+    [muscle]="muscleToShow"
+  ></app-muscle-tool-tip>
+
+  <!-- body diagram -->
+  <svg
+    [@flipAnimation]="viewAngle"
+    class="h-[calc(1225px*0.3)]"
+    viewBox="0 0 394 1225"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g id="body diagram">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        [id]="currentBody?.id"
+        [attr.d]="currentBody?.path"
+        fill="#464261"
+      />
+      @for (muscle of currentBody?.muscles; track $index) {
+        <g
+          [id]="muscle.id"
+          [attr.data-name]="muscle.name"
+          (mouseover)="muscleOnMouseover($index)"
+          (mouseout)="muscleOnMouseout($index)"
+          (mousemove)="onMousemove($event)"
+          (click)="chooseTargetedMuscle($index)"
+        >
+          @for (path of muscle.paths; track $index) {
+            <path
+              class="cursor-pointer duration-100 ease-in-out"
+              [ngClass]="{
+                'fill-[#b8b1db]': path.selected,
+                'animate-blink': isChoosingMuscle,
+              }"
+              [attr.data-name]="path.name"
+              [attr.data-side]="path.side"
+              [attr.d]="path.path"
+              fill="#766F9F"
+            />
+          }
+        </g>
+      }
+    </g>
+  </svg>
+</div>

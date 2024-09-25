@@ -1,0 +1,53 @@
+<div class="fixed z-50 w-full px-4 pt-2">
+  <nav
+    class="z-20 flex w-full flex-row items-center justify-between rounded-md bg-custom-semiBg1 px-4 py-2 text-custom-text relative"
+  >
+    <!-- logo -->
+    <div class="flex items-center">
+      <!-- logo image -->
+      <img
+        class="h-10 w-10"
+        src="../../../../assets/icons/logo firefist.svg"
+        alt="logo"
+      />
+      <!-- logo text -->
+      <h1 class="text-2xl font-semibold uppercase text-custom-primary">
+        FireFist
+      </h1>
+    </div>
+    <!-- navigation -->
+    <ul class="flex flex-row items-center sm:gap-6 md:gap-8">
+      @for (link of links; track $index) {
+        <li>
+          <a
+            [routerLink]="link.url"
+            routerLinkActive="active"
+            class="cursor-pointer rounded-md px-3 py-2 duration-300 ease-in-out"
+            [class.bg-custom-semiBg3]="link.isCurrent"
+            [class.bg-transparent]="!link.isCurrent"
+            (click)="onLinkClick(link)"
+            >{{ link.name }}</a
+          >
+        </li>
+      }
+    </ul>
+    <!-- if the user logged in successfully -->
+    @if (loggedIn) {
+      <button
+        (click)="logout()"
+        class="rounded-md border border-custom-accent bg-transparent px-3 py-2 text-custom-accent"
+      >
+        Logout
+      </button>
+      <!-- if the user not logged in -->
+    } @else {
+      <!-- login button -->
+      <a
+        routerLink="login"
+        class="rounded-md border border-custom-accent bg-transparent px-3 py-2 text-custom-accent"
+      >
+        Login
+      </a>
+    }
+  </nav>
+</div>

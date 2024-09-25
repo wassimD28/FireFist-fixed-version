@@ -1,0 +1,44 @@
+<div class="mb-2 flex flex-col gap-2 rounded-lg bg-custom-semiBg1 p-2">
+  <!-- targeted muscle filter heading -->
+  <h1
+    class="mb-1 text-xl font-semibold text-custom-accent first-letter:uppercase"
+  >
+    Targeted muscle
+  </h1>
+  <!-- targeted muscle container -->
+  <div class="flex flex-col gap-2">
+    <!-- searchBar -->
+    <div class="relative">
+      <input
+        (focus)="searchBarFocused=true"
+        (blur)="searchBarFocused=false"
+        placeholder="search"
+        type="text"
+        class="h-8 w-full rounded-md border-0 bg-custom-semiBg2 text-sm focus:ring-custom-accent pr-8"
+      />
+      <fa-icon
+        [class.text-custom-accent]="searchBarFocused"
+        [class.text-custom-text]="!searchBarFocused"
+        class="absolute bottom-0 right-0 top-0 mr-2 mt-1 text-base cursor-pointer"
+        [icon]="faMagnifyingGlass"
+      ></fa-icon>
+    </div>
+    <!-- targeted muscle -->
+    <div class="flex flex-row gap-2">
+      @for (targetedMuscle of targetedMuscles; track $index) {
+        <div
+          class="flex h-16 w-16 flex-col items-center justify-center gap-1 rounded-md bg-custom-semiBg2"
+        >
+          <!-- targeted muscle image -->
+          <img
+            class="h-9 w-9"
+            [src]="'../../../../assets/icons/light/' + targetedMuscle.image"
+            [alt]="targetedMuscle.name"
+          />
+          <!-- targeted muscle name -->
+          <h3 class="text-xs">{{ targetedMuscle.name }}</h3>
+        </div>
+      }
+    </div>
+  </div>
+</div>

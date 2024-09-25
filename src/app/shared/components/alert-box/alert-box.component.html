@@ -1,0 +1,45 @@
+<div
+  class="absolute bottom-4 z-50 w-96 rounded border border-custom-primary p-3 duration-300 ease-in-out"
+  [ngClass]="{
+    '-left-96': !alert.show,
+    'left-4': alert.show,
+    'border-custom-primary': alert.alertStatus == AlertStatus.None,
+    'bg-custom-semiBg3': alert.alertStatus == AlertStatus.None,
+    'bg-yellow-950': alert.alertStatus == AlertStatus.Warning,
+    'border-yellow-500': alert.alertStatus == AlertStatus.Warning,
+  }"
+>
+  <h2 class="font-medium">{{ alert.title || "untitled" }}</h2>
+  <p class="text-sm font-thin text-custom-text/70">
+    {{ alert.description || "no description" }}
+  </p>
+  <fa-icon
+    (click)="turnDisplayOff()"
+    class="absolute right-2 top-1 text-custom-text opacity-60 hover:opacity-100"
+    [icon]="faX"
+  ></fa-icon>
+</div>
+
+<!--
+<div
+  class="absolute left-24 z-50 w-96 rounded border border-custom-primary  p-3 duration-500 ease-in-out"
+  [ngClass]="{
+    '-top-96': !alert.show,
+    'top-4': alert.show,
+    'border-custom-primary' : alert.alertStatus == AlertStatus.None,
+    'bg-custom-semiBg3' : alert.alertStatus == AlertStatus.None,
+    'bg-yellow-950' : alert.alertStatus == AlertStatus.Warning,
+    'border-yellow-500' : alert.alertStatus == AlertStatus.Warning,
+  }"
+>
+  <h2 class="font-medium">{{ alert.title || 'untitled'}}</h2>
+  <p class="text-sm font-thin text-custom-text/70">
+    {{ alert.description || 'no description' }}
+  </p>
+  <fa-icon
+    (click)="turnDisplayOff()"
+    class="absolute right-2 top-1 text-custom-text opacity-60 hover:opacity-100"
+    [icon]="faX"
+  ></fa-icon>
+</div>
+-->

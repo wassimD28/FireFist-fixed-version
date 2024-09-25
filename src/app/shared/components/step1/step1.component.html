@@ -1,0 +1,48 @@
+<div class="w-[600px] px-4">
+  <!-- exercise name input -->
+  <div class="relative mb-3">
+    <input
+      type="text"
+      id="floating_filled"
+      class="peer block w-full appearance-none rounded-t-md border-0 border-b-2 border-gray-300 bg-gray-50 px-2.5 pb-2.5 pt-5 text-sm text-gray-900 placeholder:opacity-0 focus:border-blue-600 focus:outline-none focus:ring-0 focus:placeholder:opacity-100 dark:border-transparent dark:bg-custom-bg dark:text-white dark:focus:border-custom-accent"
+      placeholder="Exp: push up"
+    />
+    <label
+      for="floating_filled"
+      class="absolute start-2.5 top-4 z-10 origin-[0] -translate-y-4 scale-75 transform text-sm text-gray-500 duration-150 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:text-gray-400 peer-focus:dark:text-custom-accent"
+      >Exercise Name</label
+    >
+  </div>
+  <!-- exercise description -->
+  <div class="group relative mb-3">
+    <textarea
+      id="description"
+      class="peer block h-48 w-full resize-none appearance-none rounded-t-md border-0 border-b-2 border-gray-300 bg-gray-50 px-2.5 pb-2.5 pt-5 text-sm text-gray-900 placeholder:opacity-0 focus:border-custom-accent focus:outline-none focus:ring-0 focus:placeholder:opacity-100 dark:border-transparent dark:bg-custom-bg dark:text-white dark:focus:border-custom-accent"
+      placeholder="describe your exercise ..."
+      [(ngModel)]="exercise.description"
+      maxlength="500"
+    ></textarea>
+    <label
+      for="description"
+      class="absolute start-2.5 top-4 z-10 flex origin-[0] -translate-y-4 scale-75 transform flex-row items-center gap-1 text-sm text-gray-500 duration-150 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600 rtl:peer-focus:left-auto rtl:peer-focus:translate-x-1/4 dark:text-gray-400 peer-focus:dark:text-custom-accent"
+    >
+      Description
+      <span
+        class="ml-1 text-xs font-thin text-custom-accent opacity-0 duration-150 group-focus-within:opacity-50"
+      >
+        (Optional)
+      </span>
+    </label>
+    <!-- length counter -->
+    <p
+      class="absolute bottom-2 right-1 text-xs text-custom-accent opacity-60"
+    >
+      {{ exercise.description.length }}/500
+    </p>
+  </div>
+  <!-- exercise image input -->
+  <input
+    class="mb-3 block h-10 w-full cursor-pointer rounded-md bg-custom-semiBg3 text-sm text-gray-900 file:h-10 file:border-none file:bg-custom-semiBg3 file:text-custom-text focus:outline-none dark:bg-custom-bg dark:text-gray-400 dark:placeholder-gray-400"
+    type="file"
+  />
+</div>

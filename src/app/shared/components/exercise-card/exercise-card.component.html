@@ -1,0 +1,69 @@
+<div
+  class="flex h-[210px] w-full flex-col overflow-hidden rounded-lg bg-custom-semiBg2"
+>
+  <div class="relative h-[72%]">
+    <!-- exercise image -->
+    <img
+      class="h-full w-full"
+      [src]="'../../../../assets/images/' + exercise.image"
+      alt=""
+    />
+    <!-- Gradient -->
+    <div
+      class="absolute left-0 top-0 h-full w-full bg-gradient-to-t from-custom-bg"
+    >
+      <!-- exercise info -->
+      <div class="absolute bottom-0 left-0 h-full w-full p-2">
+        <!-- ellipsis-vertical -->
+        <fa-icon
+          class="absolute right-3 top-1 text-xl text-custom-text cursor-pointer"
+          [icon]="faEllipsisV"
+        ></fa-icon>
+        <!-- exercise Name -->
+        <h3
+          class="absolute bottom-1 left-2 mb-1 text-xl font-bold text-custom-text cursor-pointer"
+        >
+          {{ exercise.name }}
+        </h3>
+      </div>
+    </div>
+    <!-- exercise info -->
+    <div class="flex flex-col gap-1">
+      <!-- exercise muscle + difficulty + category container -->
+      <div class="flex flex-row items-center justify-between px-2 pt-2">
+        <!-- targeted muscle image -->
+        <div class="flex flex-row gap-2">
+          @for (muscle of exercise.targetedMuscles; track $index) {
+            <img
+              class="h-5 w-5 opacity-80"
+              [src]="'../../../../assets/icons/svg icon/' + muscle.image"
+              alt=""
+            />
+          }
+        </div>
+        <!-- exercise category and difficulty container -->
+        <div class="flex flex-row gap-1 bg-custom-bg rounded-full items-center">
+          <!-- exercise difficulty -->
+          <h4
+            class="text-transparent-bg rounded-full px-2 py-1.5 text-xs font-bold"
+            [class.bg-green-400]="
+              exercise.difficulty == exerciseDifficulty.Beginner
+            "
+            [class.bg-yellow-400]="
+              exercise.difficulty == exerciseDifficulty.Intermediate
+            "
+            [class.bg-red-400]="
+              exercise.difficulty == exerciseDifficulty.Advanced
+            "
+          >
+            {{ exercise.difficulty }}
+          </h4>
+          <!-- exercise category -->
+          <img class="h-5 mr-2" [src]="'../../../../assets/icons/light/'+ exercise.category.toLowerCase()+'.png'" [alt]="exercise.category.toLowerCase()">
+        </div>
+      </div>
+      <!-- exercise owner -->
+      <h2 class="text-gray-500 text-xs pl-2">FireFist team</h2>
+    </div>
+  </div>
+</div>

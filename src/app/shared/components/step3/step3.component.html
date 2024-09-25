@@ -1,0 +1,52 @@
+<div class="flex w-[600px] flex-col gap-1 px-4">
+ <!-- heading -->
+  <div
+    class="mb-2 flex h-8 flex-row items-center gap-1 rounded  bg-custom-semiBg2"
+  >
+    <h1
+      class="flex h-full items-center rounded bg-custom-primary uppercase px-2 text-base font-bold tracking-wider text-custom-semiBg1"
+    >
+      value counter:
+    </h1>
+    <h1 class="flex items-center rounded text-sm text-custom-text">
+      choose the appropriate value counter for your exercise.
+    </h1>
+  </div>
+  <div
+    class="flex h-[350px] w-full flex-row flex-wrap items-center justify-center gap-1"
+  >
+    @for (valueCounter of valueCounters; track $index) {
+      <div
+        (click)="toggleCheckbox($index)"
+        class="flex h-1/2 w-[32%] cursor-pointer select-none flex-col items-center justify-center rounded  p-2 py-4 duration-100 ease-in-out hover:bg-custom-semiBg3"
+        [ngClass]="{
+          'border border-custom-primary bg-custom-darkPurple':
+            checkBoxesStats[$index].checked,
+          'hover:bg-custom-semiBg3 bg-custom-semiBg2': !checkBoxesStats[$index].checked,
+        }"
+      >
+        <!-- value counter image -->
+        <img
+          class="h-24 w-24"
+          [src]="'../../../../assets/icons/light/' + valueCounter.image"
+          alt=""
+        />
+        <!-- value counter name -->
+        <h1 class="text-sm font-medium text-custom-text first-letter:uppercase">
+          {{ valueCounter.name }}
+        </h1>
+        <!-- value counter description -->
+        <p class="text-center text-xs text-custom-text opacity-70">
+          {{ valueCounter.description }}
+        </p>
+        <!-- checkbox -->
+        <input
+          class="absolute bottom-1 right-1 hidden"
+          type="checkbox"
+          [(ngModel)]="checkBoxesStats[$index].checked"
+          [name]="valueCounter.name"
+        />
+      </div>
+    }
+  </div>
+</div>

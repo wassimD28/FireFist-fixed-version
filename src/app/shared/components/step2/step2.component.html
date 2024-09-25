@@ -1,0 +1,45 @@
+<div class="flex w-[600px] flex-col gap-1 px-4">
+  <div class="bg-custom-semiBg2 mb-2 rounded h-8 flex flex-row gap-1 items-center">
+    <h1
+      class="rounded bg-custom-primary h-full  text-base font-bold tracking-wider text-custom-bg flex items-center px-2"
+    >
+      CATEGORY:
+    </h1>
+    <h1
+      class="rounded  text-sm text-custom-text flex items-center"
+    >
+      choose the appropriate category for your exercise.
+    </h1>
+  </div>
+  @for (category of categories; track $index) {
+    <div
+      (click)="toggleCheckbox($index)"
+      class="relative flex h-28 w-full cursor-pointer select-none flex-row items-center gap-2 rounded px-4 py-1 duration-100 ease-in-out before:absolute before:-left-2 before:h-full before:w-2 before:rounded-l before:content-[''] hover:bg-custom-semiBg3"
+      [ngClass]="{
+        'ml-2 bg-custom-semiBg2 before:bg-purple-500':
+          checkBoxesStats[$index].checked,
+      }"
+    >
+      <!-- categories icons -->
+      <img
+        class="w-[10%]"
+        [src]="'../../../../assets/icons/light/' + category.image"
+        [alt]="category.image"
+      />
+      <div class="flex h-full w-[90%] flex-col gap-1">
+        <h2 class="text-lg font-medium first-letter:uppercase">
+          {{ category.name }}
+        </h2>
+        <p class="text-sm opacity-70">
+          {{ category.description }}
+        </p>
+      </div>
+      <input
+        class="absolute bottom-1 right-1 hidden"
+        type="checkbox"
+        [(ngModel)]="checkBoxesStats[$index].checked"
+        [name]="category.name"
+      />
+    </div>
+  }
+</div>

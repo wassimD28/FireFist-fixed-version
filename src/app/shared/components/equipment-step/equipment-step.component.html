@@ -1,0 +1,317 @@
+<div class="flex h-full w-[600px] flex-row gap-2 px-4">
+  <!-- selected equipment side -->
+  <div
+    class="flex h-full w-[calc(50%-4px)] flex-col rounded bg-custom-semiBg2 px-2 py-3"
+  >
+    <span class="flex flex-row items-center justify-between px-1">
+      <h1 class="text-lg font-semibold text-custom-primary">
+        Selected Equipment
+      </h1>
+      <p class="text-sm">{{ selectedEquipmentList.length }}/3</p>
+    </span>
+    <div
+      class="flex h-full w-full items-center gap-1 rounded py-2"
+      [class.flex-col]="selectedEquipmentList.length >= 1"
+    >
+      @if (selectedEquipmentList.length >= 1) {
+        @for (equipment of selectedEquipmentList; track $index) {
+          <!-- selected equipment item -->
+          <div
+            class="flex w-full flex-row gap-2 rounded bg-custom-semiBg3 px-2 py-2"
+          >
+            <img
+              class="max-h-16 w-14 rounded"
+              [src]="
+                'http://localhost:3000/upload/images/equipment/' +
+                equipment.image
+              "
+              [alt]="equipment.image"
+            />
+            <div>
+              <h3 class="text-sm font-medium first-letter:uppercase">
+                {{ equipment.name }}
+              </h3>
+              <p class="text-xs opacity-70">
+                {{ equipment.description }}
+              </p>
+            </div>
+          </div>
+        }
+      } @else if (selectedEquipmentList.length == 0) {
+        <div
+          class="flex h-fit w-full flex-col items-center justify-center px-6"
+        >
+          <img
+            class="w-40 opacity-40"
+            src="../../../../assets/icons/svg icon/choose equipment.svg"
+            alt=""
+          />
+          <p class="text-center text-sm opacity-40">
+            No equipment selected yet. Please select at least one.
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+  <!-- search equipment side -->
+  <div
+    class="relative flex h-full w-[calc(50%-4px)] flex-col overflow-hidden rounded"
+  >
+    <!-- custom equipment alert on delete -->
+    <div
+      class="absolute left-5 z-50 flex w-56 flex-col items-center rounded-lg border-custom-primary bg-custom-semiBg3 p-3 duration-500 ease-[cubic-bezier(.05,.87,.02,.99)] top-40"
+      [ngClass]="{
+        'scale-50 opacity-0': !showDeletingAlert,
+        'scale-100 opacity-100': showDeletingAlert,
+      }"
+    >
+      <h1 class="first-letter:uppercase font-medium mb-1">Delete "{{ (equipmentToDelete?.name ?? "") | firstLetterUppercase }}" ?</h1>
+      <p class="text-xs opacity-50 mb-2 font-thin text-center">you will not be able to recover this equipment again.</p>
+      <span class="grid w-full grid-cols-2 gap-2 px-5">
+        <button
+          class="w-full justify-center rounded border border-custom-text py-1 text-sm hover:bg-custom-semiBg4"
+          (click)="confirmDeleteEquipment()"
+        >
+          Delete
+        </button>
+        <button
+          class="w-full justify-center rounded bg-custom-primary/70 py-1 text-sm hover:bg-custom-primary"
+          (click)="cancelDeleteAlert()"
+        >
+          Cancel
+        </button>
+      </span>
+    </div>
+    <!-- black solid to prevent events when the deleting alert is showing -->
+    <div
+      class="absolute left-0 top-0 z-40 h-full w-full bg-black duration-300 ease-in-out"
+      [ngClass]="{
+        'opacity-60': showDeletingAlert,
+        'pointer-events-none opacity-0': !showDeletingAlert,
+      }"
+    ></div>
+    <!-- search existing equipment panel -->
+    <div
+      class="relative flex h-full w-full flex-col gap-2 rounded bg-custom-semiBg2 px-2 pt-3 duration-150 ease-in-out"
+      [ngClass]="{
+        'opacity-70': showCreatePanel,
+        'opacity-100': !showCreatePanel,
+      }"
+    >
+      <!-- search input -->
+      <div class="group relative flex h-9 w-full flex-row">
+        <input
+          (input)="searchEquipment()"
+          [(ngModel)]="equipmentToSearch"
+          class="h-full w-full rounded border-0 bg-custom-semiBg1 outline-none ring-0 ring-custom-primary duration-200 ease-in-out placeholder:text-sm placeholder:text-custom-text/30 focus:border focus:border-none focus:ring-1"
+          type="text"
+          placeholder="Search equipment..."
+        />
+        <!-- search icon -->
+        <fa-icon
+          class="absolute right-2 top-1 text-xl text-custom-text/80 duration-200 ease-in-out group-focus-within:text-custom-primary"
+          [icon]="faMagnifyingGlass"
+        ></fa-icon>
+      </div>
+      <!-- equipment privacy -->
+      <div class="flex flex-row gap-1 rounded bg-custom-semiBg3 p-1">
+        <button
+          class="w-full rounded py-1 tracking-wide duration-100 ease-in-out first-letter:uppercase"
+          [class.bg-custom-primary]="
+            currentEquipmentPrivacy === EquipmentPrivacy.All
+          "
+          [class.hover:bg-custom-semiBg4]="
+            currentEquipmentPrivacy === EquipmentPrivacy.Created
+          "
+          (click)="showAllEquipment()"
+        >
+          All
+        </button>
+        <button
+          class="w-full rounded py-1 tracking-wide duration-100 ease-in-out first-letter:uppercase"
+          [class.bg-custom-primary]="
+            currentEquipmentPrivacy === EquipmentPrivacy.Created
+          "
+          [class.hover:bg-custom-semiBg4]="
+            currentEquipmentPrivacy === EquipmentPrivacy.All
+          "
+          (click)="showCreatedEquipment()"
+        >
+          Created
+        </button>
+      </div>
+      @if (currentEquipmentPrivacy == EquipmentPrivacy.All) {
+        @if (filteredStandardEquipmentList.length >= 1) {
+          <!-- standard equipment list container -->
+          <div class="grid w-full grid-cols-3 items-center gap-1">
+            @for (equipment of filteredStandardEquipmentList; track $index) {
+              <!-- equipment item -->
+              <div
+                class="relative flex w-full flex-col items-center gap-1 rounded bg-custom-semiBg3 p-1 duration-150 ease-in-out"
+              >
+                <!-- equipment image -->
+                <img
+                  class="h-14 w-full rounded"
+                  [src]="
+                    'http://localhost:3000/upload/images/equipment/' +
+                    equipment.image
+                  "
+                  [alt]="equipment.image"
+                />
+                <!-- equipment name -->
+                <div class="text-sm text-custom-text/80">
+                  {{ equipment.name }}
+                </div>
+              </div>
+            }
+          </div>
+        } @else if (filteredStandardEquipmentList.length == 0) {
+          <div class="flex w-full flex-col items-center justify-center p-5">
+            <img
+              class="w-full"
+              src="../../../../assets/images/empty-error.png"
+              alt=""
+            />
+            <p class="font-thin text-custom-text/70 first-letter:uppercase">
+              there is no equipment.
+            </p>
+          </div>
+        }
+      } @else if (currentEquipmentPrivacy == EquipmentPrivacy.Created) {
+        @if (filteredCustomEquipmentList.length >= 1) {
+          <!-- custom equipment list container -->
+          <div
+            class="relative grid max-h-[300px] w-full grid-cols-2 items-start justify-start gap-1 overflow-y-scroll pr-1 scrollbar scrollbar-thumb-violet-600/50 hover:scrollbar-thumb-violet-600"
+          >
+            @for (equipment of filteredCustomEquipmentList; track $index) {
+              <!-- equipment item -->
+              <div
+                [ngClass]="{
+                  'bg-custom-semiBg3': !equipment.selected,
+                  'border border-custom-text bg-custom-darkPurple':
+                    equipment.selected,
+                }"
+                class="relative flex w-full flex-col items-center gap-1 rounded p-1 duration-150 ease-in-out"
+
+              >
+                <!-- delete operation -->
+                <div class="group relative h-24 w-full overflow-hidden rounded">
+                  <div
+                    [class.hidden]="equipment.selected"
+                    class="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/0 duration-300 ease-in-out hover:bg-black/60"
+                  >
+                    <!-- delete custom equipment button -->
+
+                    <button
+                      [disabled]="equipment.selected"
+                      (click)="storeEquipmentAndIndex(equipment, $index)"
+                      [class.hidden]="equipment.selected"
+                      class="cursor-pointer rounded-lg px-2 py-1 text-center text-2xl text-custom-text/0 duration-300 ease-in-out group-hover:text-custom-text hover:bg-custom-text/25 hover:text-custom-text"
+                    >
+                      <fa-icon
+                        [icon]="faTrashCan"
+                        class="text-center text-2xl text-custom-text/0 duration-300 ease-in-out group-hover:text-custom-text "
+                      ></fa-icon>
+                    </button>
+                  </div>
+                  <!-- equipment image -->
+                  <img
+                    class="h-full w-full rounded"
+                    [src]="
+                      'http://localhost:3000/upload/images/equipment/' +
+                      equipment.image
+                    "
+                    [alt]="equipment.image"
+                  />
+                </div>
+                <!-- equipment name -->
+                <div
+                  class="select-none text-sm text-custom-text/80 first-letter:uppercase cursor-pointer"
+                  (click)="toggleSelection($index)"
+                >
+                  {{ equipment.name }}
+                </div>
+              </div>
+            }
+          </div>
+        } @else if (filteredCustomEquipmentList.length == 0) {
+          <div class="flex w-full flex-col items-center justify-center p-5">
+            <img
+              class="w-full"
+              src="../../../../assets/images/empty-error.png"
+              alt=""
+            />
+            <p class="font-thin text-custom-text/70 first-letter:uppercase">
+              there is no equipment.
+            </p>
+          </div>
+        }
+      }
+
+      <!-- add icon -->
+      <button
+        (click)="ToggleCreatePanel()"
+        [disabled]="currentEquipmentPrivacy === EquipmentPrivacy.All"
+        [ngClass]="{
+          hidden: currentEquipmentPrivacy === EquipmentPrivacy.All,
+        }"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          class="group absolute bottom-3 right-3 h-10 w-10 cursor-pointer"
+        >
+          <g id="style=bulk">
+            <g id="add">
+              <path
+                id="rectangle"
+                d="M1.25 7.25C1.25 3.93629 3.93629 1.25 7.25 1.25H16.75C20.0637 1.25 22.75 3.93629 22.75 7.25V16.75C22.75 20.0637 20.0637 22.75 16.75 22.75H7.25C3.93629 22.75 1.25 20.0637 1.25 16.75V7.25Z"
+                fill="#892cdc"
+                class="group-hover:fill-custom-accent hover:text-custom-accent"
+              />
+              <path
+                id="vector (Stroke)"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M12.0248 6.32349C12.3578 6.32349 12.6277 6.59345 12.6277 6.92646L12.6277 16.8281C12.6277 17.1611 12.3577 17.431 12.0247 17.431C11.6917 17.431 11.4218 17.1611 11.4218 16.8281L11.4218 6.92645C11.4218 6.59344 11.6918 6.32349 12.0248 6.32349Z"
+                fill="#1b1b1b"
+              />
+              <path
+                id="vector (Stroke)_2"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M17.8486 12.0044C17.8486 12.3553 17.5641 12.6398 17.2132 12.6398L6.77865 12.6398C6.42771 12.6398 6.14323 12.3553 6.14323 12.0043C6.14323 11.6534 6.42772 11.3689 6.77865 11.3689L17.2132 11.369C17.5641 11.369 17.8486 11.6535 17.8486 12.0044Z"
+                fill="#1b1b1b"
+              />
+            </g>
+          </g>
+        </svg>
+      </button>
+    </div>
+    <!-- create new equipment panel -->
+    <div
+      class="absolute left-0 flex h-full w-full flex-col rounded bg-custom-semiBg2 px-2 py-3 duration-300 ease-in-out"
+      [ngClass]="{
+        '-bottom-[450px]': !showCreatePanel,
+        '-bottom-0': showCreatePanel,
+      }"
+    >
+      <div class="mb-2 flex flex-row items-center gap-2 px-1">
+        <fa-icon
+          (click)="ToggleCreatePanel()"
+          class="cursor-pointer rounded-lg px-2 py-1 text-2xl text-custom-text/70 hover:bg-custom-text/10 hover:text-custom-text"
+          [icon]="faArrowLeftLong"
+        ></fa-icon>
+        <h2 class="text-xl font-medium first-letter:uppercase">
+          new Equipment
+        </h2>
+      </div>
+      <!--  form here  -->
+      <app-equipment-form
+        (refreshListChange)="fetchCustomEquipmentList()"
+        (showCreatePanelChange)="ToggleCreatePanel()"
+      ></app-equipment-form>
+    </div>
+  </div>
+</div>
