@@ -3,25 +3,28 @@
   <app-stepper [steps]="steps"></app-stepper>
   <!-- steps container -->
   <div
-    class="mt-[70px] flex w-[calc(600px*5)] flex-row flex-wrap duration-300 ease-in-out"
+    class="mt-[70px] flex w-[calc(600px*6)] flex-row flex-wrap duration-300 ease-in-out"
     [ngClass]="{
-      'translate-x-[0px]': steps[0].isCurrent,
-      'translate-x-[-600px]': steps[1].isCurrent,
+      'translate-x-[calc(-600px*0)]': steps[0].isCurrent,
+      'translate-x-[calc(-600px*1)]': steps[1].isCurrent,
       'translate-x-[calc(-600px*2)]': steps[2].isCurrent,
       'translate-x-[calc(-600px*3)]': steps[3].isCurrent,
       'translate-x-[calc(-600px*4)]': steps[4].isCurrent,
+      'translate-x-[calc(-600px*5)]': steps[5].isCurrent,
     }"
   >
     <!-- 1st step : writing name, description, and choosing image-->
     <app-step1 [exercise]="exercise"></app-step1>
     <!-- 2nd step : selecting categories-->
-    <app-step2 [exercise]="exercise" [categories]="categories"></app-step2>
+    <app-step2 [exercise]="exercise"></app-step2>
     <!-- 3rd step : selecting value counter-->
-    <app-step3 [exercise]="exercise" [valueCounters]="valueCounters"></app-step3>
+    <app-step3 [exercise]="exercise"></app-step3>
     <!-- 4th step : selecting targeted muscles-->
     <app-targeted-muscle-step (alertChange)="setAlert($event)" [exercise]="exercise" [bodyDiagrams]="bodyDiagrams"></app-targeted-muscle-step>
     <!-- 5th step : choosing equipment -->
     <app-equipment-step></app-equipment-step>
+    <!-- 6th step : choosing difficulty level -->
+    <app-difficulty-level-step></app-difficulty-level-step>
   </div>
 
   <!-- next button -->

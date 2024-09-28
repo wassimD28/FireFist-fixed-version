@@ -1,6 +1,9 @@
 import { ExerciseDifficulty } from "../../enums/exerciseDifficulty.enum";
 
 export interface Difficulty{
-  Difficulty : ExerciseDifficulty;
-  description: string;
+  id?: number;
+  name : ExerciseDifficulty;
+  description?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

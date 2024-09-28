@@ -1,3 +1,4 @@
+import { Component, ViewChild } from "@angular/core";
 import { AlertStatus } from "../../enums/common.enum";
 
 export interface User{
@@ -34,4 +35,11 @@ export interface Alert {
   description?: string;
   alertStatus?: AlertStatus,
   show: boolean;
+}
+export interface Step {
+  id: number;
+  title ?: string;
+  completed: boolean;
+  isCurrent: boolean;
+  component: any;
 }

@@ -14,18 +14,7 @@ export class DifficultyFilterComponent {
 
 
   difficulties: Difficulty[] = [
-    {
-      Difficulty: ExerciseDifficulty.Beginner,
-      description: 'Ideal for those new to exercise, focusing on foundational movements and basic techniques to build confidence and prevent injury.'
-    },
-    {
-      Difficulty: ExerciseDifficulty.Intermediate,
-      description: 'Designed for individuals with some exercise experience, incorporating moderate intensity and more complex routines to enhance strength and endurance.'
-    },
-    {
-      Difficulty: ExerciseDifficulty.Advanced,
-      description: 'Perfect for seasoned fitness enthusiasts, featuring high-intensity workouts and challenging exercises to push limits and achieve peak performance.'
-    }
+    
   ];
 
 }
