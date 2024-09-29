@@ -1,16 +1,16 @@
 import { CategoryService } from './../../../core/services/category/category.service';
 import { AuthService } from './../../../core/services/auth/auth.service';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnInit } from '@angular/core';
 import { Exercise } from '../../../core/models/interfaces/exercise.interface';
 import { Category } from '../../../core/models/interfaces/category.interface';
 import { ExerciseCategory } from '../../../core/enums/exerciseCategory.enum';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-step2',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './step2.component.html',
   styleUrl: './step2.component.css',
 })
@@ -24,21 +24,36 @@ export class Step2Component implements OnInit {
     { id: 3, checked: false },
   ];
 
-  //! injections
+  //! Dependency Injections
   private AuthService = inject(AuthService);
   private CategoryService = inject(CategoryService);
-
   //! NG live cycle hooks
   ngOnInit(): void {
     const token = this.AuthService.getAccessToken() ?? '';
     this.fetchCategories(token);
+
   }
+
   //! functions
 
   toggleCheckbox(index: number): void {
     const targetedCategory = this.checkBoxesStats[index];
     this.checkBoxesStats.forEach((category) => (category.checked = false));
     targetedCategory.checked = true;
+
+  }
+
+  isFormValid(): boolean {
+    let checkedBoxesCounter = 0;
+    this.checkBoxesStats.forEach((checkbox) =>{
+      if (checkbox.checked) {
+        checkedBoxesCounter++;
+      }
+    })
+    if (checkedBoxesCounter === 1){
+      return true;
+    }
+    return false;
   }
 
   fetchCategories(token: string): any {

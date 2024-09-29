@@ -37,6 +37,18 @@ export class Step3Component implements OnInit {
     { checked: false },
     { checked: false },
   ]
+  isFormValid(): boolean {
+    let checkedBoxesCounter = 0;
+    this.checkBoxesStats.forEach((checkbox) =>{
+      if (checkbox.checked) {
+        checkedBoxesCounter++;
+      }
+    })
+    if (checkedBoxesCounter === 1){
+      return true;
+    }
+    return false;
+  }
 
 
 

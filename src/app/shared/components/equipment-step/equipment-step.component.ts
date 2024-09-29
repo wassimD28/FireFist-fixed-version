@@ -213,6 +213,13 @@ export class EquipmentStepComponent implements OnInit {
     this.searchEquipment(); // Apply search when switching to Created
   }
 
+  isFormValid(): boolean {
+    if (this.selectedEquipmentList.length >= 1){
+      return true;
+    }
+    return false;
+  }
+
   ToggleCreatePanel() {
     this.showCreatePanel = !this.showCreatePanel;
   }

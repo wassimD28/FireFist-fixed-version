@@ -10,9 +10,9 @@ import { DifficultyService } from '../../../core/services/difficultyLevel/diffic
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './difficulty-level-step.component.html',
-  styleUrl: './difficulty-level-step.component.css'
+  styleUrl: './difficulty-level-step.component.css',
 })
-export class DifficultyLevelStepComponent implements OnInit{
+export class DifficultyLevelStepComponent implements OnInit {
   //! Variables
   difficulties: Difficulty[] = [];
   checkBoxesStats = [
@@ -24,10 +24,10 @@ export class DifficultyLevelStepComponent implements OnInit{
   private AuthService = inject(AuthService);
   private DifficultyService = inject(DifficultyService);
   //! Lifecycle hooks
-ngOnInit(): void {
-  const token = this.AuthService.getAccessToken() ?? "";
-  this.fetchDifficulties(token);
-}
+  ngOnInit(): void {
+    const token = this.AuthService.getAccessToken() ?? '';
+    this.fetchDifficulties(token);
+  }
   //! Functions
   toggleCheckbox(index: number): void {
     const targetedCategory = this.checkBoxesStats[index];
@@ -35,7 +35,20 @@ ngOnInit(): void {
     targetedCategory.checked = true;
   }
 
-  fetchDifficulties(token: string){
+  isFormValid(): boolean {
+    let checkedBoxesCounter = 0;
+    this.checkBoxesStats.forEach((checkbox) => {
+      if (checkbox.checked) {
+        checkedBoxesCounter++;
+      }
+    });
+    if (checkedBoxesCounter === 1) {
+      return true;
+    }
+    return false;
+  }
+
+  fetchDifficulties(token: string) {
     this.DifficultyService.getAllDifficulties(token).subscribe({
       next: (Response) => {
         this.difficulties = Response;
@@ -43,6 +56,6 @@ ngOnInit(): void {
       error: (error) => {
         console.error('Error fetching difficulties', error);
       },
-    })
+    });
   }
 }

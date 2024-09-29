@@ -178,7 +178,7 @@ export class CreateExerciseDialogComponent implements OnInit , AfterViewInit{
       (step) => step.isCurrent === true,
     );
     // if the form is valid in the current step
-    //? this is test
+    //* this is test
     if (this.stepComponents[currentIndex].isFormValid()) {
       console.log(
         'form is valid :' + this.stepComponents[currentIndex].isFormValid(),
@@ -188,7 +188,7 @@ export class CreateExerciseDialogComponent implements OnInit , AfterViewInit{
         'form is invalid :' + this.stepComponents[currentIndex].isFormValid(),
       );
     }
-    //? this is test 
+    //* this is test
     if (currentIndex !== -1 && currentIndex < this.steps.length - 1) {
       this.steps[currentIndex].isCurrent = false;
       this.steps[currentIndex + 1].isCurrent = true;

@@ -119,6 +119,13 @@ export class TargetedMuscleStepComponent {
     this.advancedView = !this.advancedView;
   }
 
+  isFormValid(): boolean {
+    if (this.targetedMuscles.length >= 1){
+      return true;
+    }
+    return false;
+  }
+
   removeTargetedMuscle(index: number): void {
     this.targetedMuscles.splice(index, 1);
   }
