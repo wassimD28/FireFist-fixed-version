@@ -1,8 +1,11 @@
+import { AuthService } from './../../../core/services/auth/auth.service';
+import { TargetedMusclePayload } from './../../../core/models/interfaces/targetedMuscle.interface';
 import { AlertStatus, PressureLevel } from './../../../core/enums/common.enum';
 import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   Output,
   Renderer2,
@@ -59,7 +62,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ]
 })
 export class TargetedMuscleStepComponent {
-  @Input() exercise!: Exercise;
+  //! Variables
+  @Input() formData!: FormData;
   @Input() bodyDiagrams!: BodyDiagram[];
   @Input() isChoosingMuscle: boolean = false;
   @Output() isChoosingMuscleChange = new EventEmitter<boolean>();
@@ -71,8 +75,11 @@ export class TargetedMuscleStepComponent {
   targetedMuscles: TargetedMuscle[] = [];
 
   advancedView = false;
+  //! Dependency injection
+  private authService = inject(AuthService);
+  //! Lifecycle hooks
 
-
+  //! Functions
   onMuscleSelected(muscle: Muscle): void {
     if (muscle) {
       // make sure that the selected muscle not already exists in the muscle list
@@ -119,6 +126,21 @@ export class TargetedMuscleStepComponent {
     this.advancedView = !this.advancedView;
   }
 
+  // collect formData
+  collectFormData() {
+    if (!this.isFormValid()) {
+      console.error('Form is invalid');
+      return;
+    }
+    this.targetedMuscles.forEach( muscle =>{
+      const targetedMusclePayload : TargetedMusclePayload ={
+        muscle_id : muscle.id.toString(),
+        pressureLevel: muscle.pressureLevel
+      }
+      this.formData.append('targetedMuscle', JSON.stringify(targetedMusclePayload));
+    })
+  }
+
   isFormValid(): boolean {
     if (this.targetedMuscles.length >= 1){
       return true;
@@ -134,6 +156,10 @@ export class TargetedMuscleStepComponent {
     this.isChoosingMuscle = true;
     this.isChoosingMuscleChange.emit(this.isChoosingMuscle);
     this.alertChange.emit({ show: false })
+  }
+  // reset formData when go back to the previous step
+  resetFormData() {
+    this.formData.delete('targetedMuscle');
   }
 
   onIsChoosingMuscleChange(value: boolean): void {

@@ -11,8 +11,9 @@ import { Exercise } from '../../../core/models/interfaces/exercise.interface';
 })
 export class Step1Component implements OnInit{
   //! Variables
-  @Input() exercise! : Exercise;
   form!: FormGroup;
+  @Input() formData!: FormData;
+  selectedImage: File | null = null;
   //! Dependency injection
   private formBuilder = inject(FormBuilder);
   //! Lifecycle hooks
@@ -20,17 +21,10 @@ export class Step1Component implements OnInit{
     this.form = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', [ Validators.maxLength(500)]],
-      image: [null, []]
+      image: [null, [Validators.required]]
     })
   }
   //! Functions
-  // handle image upload
-  onImageChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.form.patchValue({ image: file });
-    }
-  }
   // from validation
   isFormValid(): boolean {
     if (this.form.valid) {
@@ -39,6 +33,31 @@ export class Step1Component implements OnInit{
       return false;
     }
   }
+  onFileChange(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedImage = file;
+    }
+  }
+  // collect formData
+  collectFormData() {
+    if (!this.isFormValid()){
+      console.error('Form is invalid:', this.form.errors);
+      return;
+    }
+    this.formData.append('name', this.form.get('name')?.value);
+    this.formData.append('description', this.form.get('description')?.value);
+    // Append file
+    if (this.selectedImage) {
+      this.formData.append('image', this.selectedImage, this.selectedImage.name);
+    }
+  }
+  // reset formData when go back to the previous step
+  resetFormData() {
+    this.formData.delete('name');
+    this.formData.delete('description');
+    this.formData.delete('image');
+  }
 
   // handle form submission
   onSubmit() {
@@ -46,6 +65,7 @@ export class Step1Component implements OnInit{
       console.error('Form is invalid:', this.form.errors);
       return;
     }
+
     console.log('form submission', this.form);
   }
 }

@@ -20,3 +20,14 @@ export interface Exercise {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface ExerciseFormData{
+  name: string;
+  description: string;
+  image: string;
+  category_id: number;
+  valueCounter_id: number;
+  equipment_id: number[];
+  difficulty_id : number;
+  targetedMuscle_id: number[];
+}

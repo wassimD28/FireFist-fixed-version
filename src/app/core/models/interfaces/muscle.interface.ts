@@ -1,7 +1,7 @@
 import { Path } from "./path.interface";
 
 export interface Muscle {
-  id?: number;
+  id: number;
   name: string;
   description?: string;
   image?: string;

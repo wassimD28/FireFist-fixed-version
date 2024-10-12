@@ -47,7 +47,8 @@
       class="mb-3 block h-10 w-full cursor-pointer rounded-md bg-custom-semiBg3 text-sm text-gray-900 file:h-10 file:border-none file:bg-custom-semiBg3 file:text-custom-text focus:outline-none dark:bg-custom-bg dark:text-gray-400 dark:placeholder-gray-400"
       type="file"
       formControlName="image"
-      (change)="onImageChange($event)"
+      (change)="onFileChange($event)"
+      accept="image/*"
     />
   </form>
 </div>

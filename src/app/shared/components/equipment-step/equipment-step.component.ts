@@ -1,5 +1,5 @@
 import { FirstLetterUppercasePipe } from './../../pipes/firstLetterUppercase/first-letter-uppercase.pipe';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faMagnifyingGlass,
@@ -23,21 +23,19 @@ import { AuthService } from '../../../core/services/auth/auth.service';
     FormsModule,
     ReactiveFormsModule,
     EquipmentFormComponent,
-    FirstLetterUppercasePipe
+    FirstLetterUppercasePipe,
   ],
   templateUrl: './equipment-step.component.html',
   styleUrl: './equipment-step.component.css',
 })
 export class EquipmentStepComponent implements OnInit {
+  //! Variables
   // icons
   faMagnifyingGlass = faMagnifyingGlass;
   faArrowLeftLong = faArrowLeftLong;
   faTrashCan = faTrashCan;
 
-  constructor(
-    private equipmentService: EquipmentService,
-    private authService: AuthService,
-  ) {}
+  @Input() formData!: FormData;
 
   // to make the html see the EquipmentPrivacy enum
   public EquipmentPrivacy = EquipmentPrivacy;
@@ -70,11 +68,19 @@ export class EquipmentStepComponent implements OnInit {
   filteredStandardEquipmentList: Equipment[] = [];
   filteredCustomEquipmentList: Equipment[] = [];
 
+  //! Dependency injection
+  constructor(
+    private equipmentService: EquipmentService,
+    private authService: AuthService,
+  ) {}
+
+
+  //! Lifecycle hooks
   ngOnInit() {
     this.fetchCustomEquipmentList();
     //this.fetchStandardEquipmentList();
   }
-
+  //! Function
   // Function that searches in the equipment list
   searchEquipment() {
     if (this.currentEquipmentPrivacy === EquipmentPrivacy.All) {
@@ -95,8 +101,8 @@ export class EquipmentStepComponent implements OnInit {
   }
 
   // confirm equipment deletion
-  confirmDeleteEquipment(){
-    if (this.equipmentToDelete && this.equipmentToDeleteIndex){
+  confirmDeleteEquipment() {
+    if (this.equipmentToDelete && this.equipmentToDeleteIndex) {
       const id = this.equipmentToDelete.id;
       const index = this.equipmentToDeleteIndex;
       // delete equipment from selected equipment list
@@ -116,6 +122,20 @@ export class EquipmentStepComponent implements OnInit {
       this.equipmentToDelete = undefined;
     }
   }
+  collectFormData() {
+    if (!this.isFormValid()) {
+      console.error('Form is invalid');
+      return;
+    }
+    this.selectedEquipmentList.forEach( equipment  =>{
+      this.formData.append('equipment_id', equipment.id.toString())
+    })
+  }
+
+  // reset formData when go back to the previous step
+  resetFormData() {
+    this.formData.delete('equipment_id');
+  }
 
   // show delete alert function
   showDeleteAlert(): void {
@@ -128,7 +148,7 @@ export class EquipmentStepComponent implements OnInit {
   }
 
   // function that deletes equipment
-  storeEquipmentAndIndex(equipment: Equipment , index: number): void {
+  storeEquipmentAndIndex(equipment: Equipment, index: number): void {
     this.showDeletingAlert = true;
     this.equipmentToDelete = equipment;
     this.equipmentToDeleteIndex = index;
@@ -170,11 +190,10 @@ export class EquipmentStepComponent implements OnInit {
   // function that toggles the selected status of an equipment
   toggleSelection(index: number) {
     const selectedEquipment = this.filteredCustomEquipmentList[index];
-    this.removeFromSelectedList(selectedEquipment)
+    this.removeFromSelectedList(selectedEquipment);
     if (
       !selectedEquipment.selected ||
       selectedEquipment.selected == undefined
-
     ) {
       // if selected equipment list length is less than 3
       if (this.selectedEquipmentList.length < 3) {
@@ -214,7 +233,7 @@ export class EquipmentStepComponent implements OnInit {
   }
 
   isFormValid(): boolean {
-    if (this.selectedEquipmentList.length >= 1){
+    if (this.selectedEquipmentList.length >= 1) {
       return true;
     }
     return false;

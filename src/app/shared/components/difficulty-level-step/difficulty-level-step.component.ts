@@ -1,5 +1,5 @@
 import { AuthService } from './../../../core/services/auth/auth.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Difficulty } from '../../../core/models/interfaces/difficulty.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +14,7 @@ import { DifficultyService } from '../../../core/services/difficultyLevel/diffic
 })
 export class DifficultyLevelStepComponent implements OnInit {
   //! Variables
+  @Input() formData!: FormData;
   difficulties: Difficulty[] = [];
   checkBoxesStats = [
     { checked: false },
@@ -29,6 +30,25 @@ export class DifficultyLevelStepComponent implements OnInit {
     this.fetchDifficulties(token);
   }
   //! Functions
+  collectFormData() {
+    if (!this.isFormValid()) {
+      console.error('Form is invalid');
+      return;
+    }
+    const selectedIndex = this.checkBoxesStats.findIndex(
+      (checkBox) => checkBox.checked,
+    );
+    console.log('difficulty selected index : ' + selectedIndex)
+    console.log('difficulty selected id : ' + this.difficulties[selectedIndex].id)
+    console.log('difficulty selected index name : ' + this.difficulties[selectedIndex].name)
+    const selectedDifficultyId = this.difficulties[selectedIndex].id;
+    this.formData.append('difficulty_id', selectedDifficultyId.toString());
+  }
+
+  // reset formData when go back to the previous step
+  resetFormData() {
+    this.formData.delete('difficulty_id');
+  }
   toggleCheckbox(index: number): void {
     const targetedCategory = this.checkBoxesStats[index];
     this.checkBoxesStats.forEach((category) => (category.checked = false));
