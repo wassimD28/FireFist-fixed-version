@@ -5,8 +5,8 @@
     <!-- exercise image -->
     <img
       class="h-full w-full"
-      [src]="'../../../../assets/images/' + exercise.image"
-      alt=""
+      [src]="'http://localhost:3000' + exercise.image"
+      [alt]="exercise.image"
     />
     <!-- Gradient -->
     <div
@@ -16,12 +16,24 @@
       <div class="absolute bottom-0 left-0 h-full w-full p-2">
         <!-- ellipsis-vertical -->
         <fa-icon
-          class="absolute right-3 top-1 text-xl text-custom-text cursor-pointer"
+          class="absolute right-3 top-1 cursor-pointer rounded-md px-2 text-xl text-custom-text duration-200 ease-in-out hover:bg-white/10"
           [icon]="faEllipsisV"
+          (click)="toggleMenu()"
         ></fa-icon>
+        <!-- side operation menu -->
+        <div
+        *ngIf="isMenuOpen"
+          class="absolute right-10 top-1 w-32 rounded-md bg-custom-semiBg3 overflow-hidden"
+        >
+          <!-- delete button -->
+          <button (click)="deleteExercise(exercise.id)" class="flex flex-row gap-2 px-3 items-center hover:bg-custom-semiBg4 w-full py-1 duration-150 ease-in-out select-none">
+            <fa-icon class="text-custom-text/90 text-lg" [icon]="faTrashAlt"></fa-icon>
+            <p class="text-base text-custom-text/90">Delete</p>
+          </button>
+        </div>
         <!-- exercise Name -->
         <h3
-          class="absolute bottom-1 left-2 mb-1 text-xl font-bold text-custom-text cursor-pointer"
+          class="absolute bottom-1 left-2 mb-1 cursor-pointer text-xl font-bold text-custom-text first-letter:uppercase select-none"
         >
           {{ exercise.name }}
         </h3>
@@ -36,34 +48,40 @@
           @for (muscle of exercise.targetedMuscles; track $index) {
             <img
               class="h-5 w-5 opacity-80"
-              [src]="'../../../../assets/icons/svg icon/' + muscle.image"
-              alt=""
+              [src]="
+                '../../../../assets/icons/svg icon/' + muscle.image + '.svg'
+              "
+              [alt]="muscle.name"
             />
           }
         </div>
         <!-- exercise category and difficulty container -->
-        <div class="flex flex-row gap-1 bg-custom-bg rounded-full items-center">
+        <div class="flex flex-row items-center gap-1 rounded-full bg-custom-bg">
           <!-- exercise difficulty -->
           <h4
-            class="text-transparent-bg rounded-full px-2 py-1.5 text-xs font-bold"
+            class="rounded-full px-2 py-1.5 text-xs font-bold first-letter:uppercase"
             [class.bg-green-400]="
               exercise.difficulty == exerciseDifficulty.Beginner
             "
             [class.bg-yellow-400]="
               exercise.difficulty == exerciseDifficulty.Intermediate
             "
-            [class.bg-red-400]="
+            [class.bg-red-500]="
               exercise.difficulty == exerciseDifficulty.Advanced
             "
           >
             {{ exercise.difficulty }}
           </h4>
           <!-- exercise category -->
-          <img class="h-5 mr-2" [src]="'../../../../assets/icons/light/'+ exercise.category.toLowerCase()+'.png'" [alt]="exercise.category.toLowerCase()">
+          <img
+            class="mr-2 h-5"
+            [src]="'../../../../assets/icons/light/' + exercise.category"
+            [alt]="exercise.category.toLowerCase()"
+          />
         </div>
       </div>
       <!-- exercise owner -->
-      <h2 class="text-gray-500 text-xs pl-2">FireFist team</h2>
+      <h2 class="pl-2 text-xs text-gray-500">FireFist team</h2>
     </div>
   </div>
 </div>

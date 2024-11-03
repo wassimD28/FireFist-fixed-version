@@ -1,3 +1,4 @@
+import { ExerciseIndexComponent } from './../../../pages/exercise-index/exercise-index.component';
 import { AuthService } from './../../../core/services/auth/auth.service';
 import { Step2Component } from './../step2/step2.component';
 import {
@@ -133,6 +134,9 @@ export class CreateExerciseDialogComponent implements OnInit, AfterViewInit {
   // display alert
   alert: Alert = { show: false };
 
+  // emit event when finish creating exercise
+  @Output() exerciseCreated = new EventEmitter();
+
   // from data to collect exercise data from all components
   formData: FormData = new FormData();
 
@@ -258,6 +262,8 @@ export class CreateExerciseDialogComponent implements OnInit, AfterViewInit {
       next: (response) => {
         console.log("exercise created successfully : "+response);
         this.close();
+        this.exerciseCreated.emit();
+        //this.ExerciseIndexComponent.fetchExercises()
       },
       error: (error) => {
         console.error('exercise creation failed', error);

@@ -47,6 +47,7 @@
         @for (exercise of exercises; track $index) {
           <app-exercise-card
             class="w-[calc((100%/4)-10px)]"
+            (exerciseDeleted)="deleteExerciseFromList($event)"
             [exercise]="exercise"
           ></app-exercise-card>
         }
